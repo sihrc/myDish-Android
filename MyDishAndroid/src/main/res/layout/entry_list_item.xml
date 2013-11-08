@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width = "wrap_content"
+        android:layout_height = "wrap_content"
+        android:textSize = "26sp"
+        android:text = "@string/default_title"
+        android:layout_alignParentLeft="true"
+        />
+
+    <TextView
+        android:id="@+id/date"
+        android:layout_width = "wrap_content"
+        android:layout_height = "wrap_content"
+        android:textSize = "16sp"
+        android:text = "@string/default_date"
+        android:layout_alignParentRight="true"
+        android:layout_alignBottom = "@id/title"
+        android:textColor="#898989"
+        />
+
+    <com.nutmeg.mydish.ResizableImageView
+        android:id="@+id/picture"
+        android:background="@android:color/black"
+        android:padding="2dp"
+        android:layout_width = "match_parent"
+        android:layout_height = "wrap_content"
+        android:adjustViewBounds="true"
+        android:layout_below="@id/title"
+        android:layout_marginTop="@dimen/picture_margin"
+        android:layout_centerInParent="true"
+        android:contentDescription="@string/picture_text"
+        />
+
+    <TextView
+        android:id="@+id/noteTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/picture_margin"
+        android:layout_below="@id/picture"
+        android:layout_alignLeft="@id/picture"
+        android:textColor="#898989"
+        android:textSize = "14sp"
+        android:text="Notes"
+        android:textStyle="bold"
+        />
+
+    <TextView
+        android:id="@+id/notes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_below="@id/noteTitle"
+        android:layout_alignLeft="@id/picture"
+        android:textColor="#898989"
+        android:textSize = "14sp"
+        android:text="@string/default_notes"
+        />
+
+<!--    <ImageView
+        android:id="@+id/divider2"
+        android:layout_marginTop = "15dp"
+        android:layout_marginBottom = "10dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:scale
+        android:layout_height="20dp"
+        android:layout_width="wrap_content"
+        android:src="@drawable/divider"
+        android:layout_below="@id/notes"
+        />-->
+</RelativeLayout>

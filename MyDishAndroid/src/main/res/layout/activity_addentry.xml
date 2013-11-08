@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ScrollView
+        android:layout_width = "match_parent"
+        android:layout_height = "match_parent"
+        >
+    <RelativeLayout
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <EditText
+        android:id = "@+id/inputTitle"
+        android:layout_width = "match_parent"
+        android:layout_height = "wrap_content"
+        android:hint = "@string/default_title"
+        android:fontFamily="sans-serif"
+        />
+
+    <ImageView
+        android:id = "@+id/inputPicture"
+        android:src="@drawable/ic_launcher"
+        android:layout_centerHorizontal="true"
+        android:layout_width = "160dp"
+        android:layout_height = "90dp"
+        android:layout_below="@id/inputTitle"
+        android:contentDescription="@string/picture_hint"
+        android:layout_margin="@dimen/picture_margin"
+        android:clickable="true"
+        />
+    <View
+        android:id="@+id/divider"
+        android:layout_height="2dp"
+        android:layout_width="match_parent"
+        android:background="#d9d9d9"
+        android:layout_below="@id/inputPicture"
+        />
+    <Button
+        android:id = "@+id/inputTakePicture"
+        android:layout_width = "match_parent"
+        android:layout_height = "wrap_content"
+        android:text = "@string/picture_hint"
+        android:textSize = "17sp"
+        android:layout_below = "@id/divider"
+        android:background="@android:color/white"
+        android:fontFamily="sans-serif"
+        />
+    <View
+        android:id="@+id/divider2"
+        android:layout_height="2dp"
+        android:layout_width="match_parent"
+        android:background="#d9d9d9"
+        android:layout_below="@id/inputTakePicture"
+        />
+    <EditText
+        android:id = "@+id/inputRecipe"
+        android:inputType="textMultiLine"
+        android:layout_width = "match_parent"
+        android:layout_height = "wrap_content"
+        android:layout_below = "@id/divider2"
+        android:hint = "Recipe"
+        android:gravity = "top|left"
+        android:lines = "3"
+        android:maxLines = "5"
+        />
+
+    <Button
+        android:id = "@+id/inputCategories"
+        android:layout_width = "match_parent"
+        android:layout_height = "wrap_content"
+        android:text = "@string/categories_hint"
+        android:textSize = "17sp"
+        android:layout_below = "@id/inputRecipe"
+        android:layout_centerInParent="true"
+        android:background="@android:color/white"
+        android:fontFamily="sans-serif"
+        />
+
+    <ImageButton
+        android:id = "@+id/down_button2"
+        android:layout_width = "30dp"
+        android:layout_height = "30dp"
+        android:background = "@drawable/down"
+        android:layout_below = "@id/inputRecipe"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="15dp"
+        android:focusable="false"
+        android:contentDescription="Expand Categories"
+        android:layout_alignParentLeft="true"/>
+
+    <ImageButton
+        android:id = "@+id/down_button"
+        android:layout_width = "30dp"
+        android:layout_height = "30dp"
+        android:background = "@drawable/down"
+        android:layout_below = "@id/inputRecipe"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="15dp"
+        android:focusable="false"
+        android:contentDescription="Expand Categories"
+        android:layout_alignParentRight="true"/>
+
+
+    <View
+        android:id="@+id/divider3"
+        android:layout_height="2dp"
+        android:layout_width="match_parent"
+        android:background="#d9d9d9"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_below="@id/down_button"
+        />
+
+    <EditText
+        android:id = "@+id/inputNotes"
+        android:inputType="textMultiLine"
+        android:layout_width = "match_parent"
+        android:layout_height = "wrap_content"
+        android:layout_below = "@id/divider3"
+        android:hint = "Notes"
+        android:gravity = "top|left"
+        android:lines = "3"
+        android:maxLines = "5"
+        />
+
+    <Button
+        android:id="@+id/cancel"
+        android:textSize = "30sp"
+        android:layout_gravity="bottom"
+        android:layout_marginTop = "20dp"
+        android:layout_marginLeft = "40dp"
+        android:layout_marginRight = "40dp"
+        android:layout_width = "40dp"
+        android:layout_height = "40dp"
+        android:layout_below = "@id/inputNotes"
+        android:layout_alignParentLeft="true"
+        android:background = "@drawable/cancel"/>
+    <View
+        android:id="@+id/divider4"
+        android:layout_toRightOf = "@id/cancel"
+        android:layout_below = "@id/inputNotes"
+        android:layout_width ="3dp"
+        android:layout_height="50dp"
+        android:layout_marginTop = "15dp"
+        android:layout_marginBottom = "10dp"
+        android:layout_gravity = "bottom"
+        android:background = "#d9d9d9"
+        />
+
+    <Button
+        android:layout_below = "@id/inputNotes"
+        android:layout_toRightOf = "@id/divider4"
+        android:id="@+id/save"
+        android:layout_gravity = "center"
+        android:textSize = "30sp"
+        android:layout_marginLeft = "55dp"
+        android:layout_marginTop = "10dp"
+        android:layout_width = "60dp"
+        android:layout_height = "60dp"
+        android:background = "@drawable/save"/>
+
+    <Button
+        android:layout_alignBottom="@id/save"
+        android:layout_toRightOf = "@id/save"
+        android:id = "@+id/textSave"
+        android:text = "Save"
+        android:fontFamily="sans-serif"
+        android:layout_width = "wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_height = "wrap_content"
+        android:textSize = "20sp"
+        android:background = "@android:color/transparent"/>
+    </RelativeLayout>
+</ScrollView>
+</RelativeLayout>
