@@ -3,8 +3,11 @@ package com.nutmeg.mydish;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -34,6 +37,16 @@ public class MainActivity extends Activity {
         EntryAdapter entryAdapter = new EntryAdapter(this,this.entries);
         entryList.setAdapter(entryAdapter);
         entryAdapter.notifyDataSetChanged();
+
+        entryList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Entry curEntry = ((Entry)adapterView.getItemAtPosition(i));
+                Intent in = new Intent(MainActivity.this, EditEntry.class);
+                in.putExtra("id",curEntry.id);
+                startActivity(in);
+            }
+        });
     }
 
     //Update Entries from database

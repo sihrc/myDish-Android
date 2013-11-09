@@ -16,7 +16,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Created by chris on 11/7/13.
@@ -24,7 +23,7 @@ import java.util.Random;
 public class EntryAdapter extends ArrayAdapter {
     Context context;
     List<Entry> entries;
-    ArrayList<String> urls = new ArrayList<String>(Arrays.asList(getContext().getString(R.string.cuteAnimals).split(",")));
+
     public EntryAdapter (Context context, List<Entry> entries){
         super(context, R.layout.entry_list_item, entries);
         this.context = context;

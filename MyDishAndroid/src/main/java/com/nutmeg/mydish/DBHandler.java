@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.provider.ContactsContract;
 import android.util.Log;
 
 import org.apache.http.util.ByteArrayBuffer;
@@ -43,7 +44,7 @@ public class DBHandler {
     }
 
     public Entry getEntryById (String id){
-        return sweepCursor(database.query(DatabaseModel.TABLE_NAME, allColumns, DatabaseModel.ENTRY_ID+ " like '%" + id + "%'", null, null, null, DatabaseModel.ENTRY_DATE  + " DESC")).get(0);
+        return sweepCursor(database.query(DatabaseModel.TABLE_NAME, allColumns, DatabaseModel.ENTRY_ID + " = " + id , null, null, null, DatabaseModel.ENTRY_DATE  + " DESC")).get(0);
     }
 
     public ArrayList<Entry> getAllEntries(){
@@ -67,14 +68,17 @@ public class DBHandler {
         values.put(DatabaseModel.ENTRY_PICTURE, newEntry.picture);
 
         //Inserting into database
-        this.database.insert(DatabaseModel.TABLE_NAME, null, values);
+        long id = this.database.insert(DatabaseModel.TABLE_NAME, null, values);
     }
 
     //Delete Posts by ID
-    public void deletePostById(String id){
-        database.delete(DatabaseModel.TABLE_NAME, DatabaseModel.ENTRY_ID + " like '%" + id + "%'", null);
+    public void deleteEntryById(String id){
+        database.delete(DatabaseModel.TABLE_NAME, DatabaseModel.ENTRY_ID + " = " + id, null);
     }
-
+    public void updateEntry(Entry entry){
+        deleteEntryById(entry.id);
+        addEntry(entry);
+    }
     //Get Posts from Cursor
     public ArrayList<Entry> sweepCursor (Cursor cursor) {
         ArrayList<Entry> entries = new ArrayList<Entry>();

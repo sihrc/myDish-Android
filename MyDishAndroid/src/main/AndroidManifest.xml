@@ -29,6 +29,13 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.nutmeg.mydish.MainActivity" />
         </activity>
+        <activity android:name=".EditEntry"
+            android:parentActivityName="com.nutmeg.mydish.MainActivity" >
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.nutmeg.mydish.MainActivity" />
+        </activity>
     </application>
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.INTERNET"/>

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="#ffffff"
+    android:layout_centerInParent="true"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id = "@+id/dialog_title"
+        android:layout_width = "match_parent"
+        android:layout_height = "wrap_content"
+        android:background = "@android:color/black"
+        android:textColor = "@android:color/white"
+        android:text = "@string/choose_categories"
+        android:textSize = "25sp"
+        android:padding = "10dp"
+        android:fontFamily="sans-serif"
+        android:layout_alignParentRight="true" />
+    <Button
+        android:id = "@+id/add_category"
+        android:layout_height = "40dp"
+        android:layout_width = "wrap_content"
+        android:layout_marginTop = "5dp"
+        android:text = "Add"
+        android:layout_marginRight = "10dp"
+        android:textColor = "@android:color/white"
+        android:fontFamily="sans-serif"
+        android:background="@android:color/black"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/dialog_title"/>
+
+    <EditText
+        android:id = "@+id/search_category"
+        android:layout_alignLeft = "@id/dialog_title"
+        android:textSize = "20sp"
+        android:layout_width = "250dp"
+        android:layout_marginTop = "10dp"
+        android:layout_height = "wrap_content"
+        android:layout_below="@id/dialog_title"
+        android:hint = "@string/search_category"
+        android:fontFamily="sans-serif"
+        />
+
+
+    <ListView
+        android:id = "@+id/category_list"
+        android:layout_alignRight = "@id/dialog_title"
+        android:layout_below = "@id/search_category"
+        android:layout_width = "wrap_content"
+        android:layout_height = "200dp"
+        android:layout_marginTop = "10dp"
+        android:divider = "#d9d9d9"
+        android:dividerHeight = "1dp"
+        />
+
+    <Button
+        android:id="@+id/cancelCats"
+        android:textSize = "30sp"
+        android:layout_gravity="bottom"
+        android:layout_marginTop = "20dp"
+        android:layout_marginLeft = "20dp"
+        android:layout_marginRight = "5dp"
+        android:layout_width = "40dp"
+        android:layout_height = "40dp"
+        android:layout_below = "@id/category_list"
+        android:layout_alignParentLeft="true"
+        android:background = "@drawable/cancel"/>
+
+    <Button
+        android:layout_alignTop = "@id/cancelCats"
+        android:layout_toRightOf = "@id/cancelCats"
+        android:id = "@+id/textCancelCats"
+        android:layout_marginTop="-4dp"
+        android:text = "Reset"
+        android:layout_marginRight="30dp"
+        android:fontFamily="sans-serif"
+        android:layout_width = "wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_height = "wrap_content"
+        android:textSize = "20sp"
+        android:background = "@android:color/transparent"/>
+
+    <View
+        android:id="@+id/divider4"
+        android:layout_toRightOf = "@id/textCancelCats"
+        android:layout_below = "@id/category_list"
+        android:layout_width ="3dp"
+        android:layout_height="50dp"
+        android:layout_marginTop = "15dp"
+        android:layout_marginBottom = "10dp"
+        android:layout_gravity = "bottom"
+        android:background = "#d9d9d9"
+        />
+
+    <Button
+        android:layout_below = "@id/category_list"
+        android:layout_toRightOf = "@id/divider4"
+        android:id="@+id/saveCats"
+        android:layout_gravity = "center"
+        android:textSize = "30sp"
+        android:layout_marginLeft = "30dp"
+        android:layout_marginTop = "10dp"
+        android:layout_width = "60dp"
+        android:layout_height = "60dp"
+        android:background = "@drawable/save"/>
+
+    <Button
+        android:layout_alignBottom="@id/saveCats"
+        android:layout_toRightOf = "@id/saveCats"
+        android:id = "@+id/textSaveCats"
+        android:text = "Save"
+        android:fontFamily="sans-serif"
+        android:layout_width = "wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_height = "wrap_content"
+        android:textSize = "20sp"
+        android:background = "@android:color/transparent"/>
+
+
+</RelativeLayout>
