@@ -166,7 +166,9 @@ public class EditEntry extends Activity {
                 public void onClick(View view) {
                     curEntry.title = title.getText().toString();
                     curEntry.notes = notes.getText().toString();
-                    curEntry.notes = notes.getText().toString() + "   --" + curDate;
+                    if (!curEntry.notes.equals(notes.getText().toString())){
+                        curEntry.notes = notes.getText().toString() + "   --" + curDate;
+                    }
                     curEntry.recipe = recipe.getText().toString();
 
                     db.updateEntry(curEntry);
