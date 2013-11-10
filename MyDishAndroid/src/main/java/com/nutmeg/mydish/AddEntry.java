@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.UserDictionary;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -36,7 +37,7 @@ public class AddEntry extends Activity {
     ArrayList<String> urls;
     String picturePath;
 
-    ArrayList<Category> categories;
+    ArrayList<Category> categories = new ArrayList<Category>();
     DBHandler db;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -167,7 +168,6 @@ public class AddEntry extends Activity {
 
     //Categories Dialog with List of Categories
     protected void showCategoriesDialog(){
-        getCategories();
         catsDialog = new CategoryDialog(AddEntry.this, categories);
         Button saveCats = (Button) catsDialog.findViewById(R.id.saveCats);
         Button textSaveCats = (Button) catsDialog.findViewById(R.id.textSaveCats);
@@ -205,24 +205,33 @@ public class AddEntry extends Activity {
 
         for(Category cat : catsDialog.getSelected()){
             if (cat.checked){
-                stringBuilder.append(cat.name);
+                stringBuilder.append(Character.toUpperCase(cat.name.charAt(0)));
+                stringBuilder.append(cat.name.substring(1));
                 stringBuilder.append(", ");
             }
         }
         if (stringBuilder.length() > 30)
             inputCategories.setText(new String(stringBuilder).substring(0,27) + "...");
-        else
-            inputCategories.setText(stringBuilder.toString());
+        else{
+            String text = stringBuilder.toString();
+            inputCategories.setText(text.substring(0, text.length() - 2));}
     }
     void getCategories(){
         String raw = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getString("categories", "");
-        categories = new ArrayList<Category>();
         if (raw.equals("")){
             categories.add(new Category("Lunch"));
         }
         else{
             for (String cat: Arrays.asList(raw.split("#"))){
-                categories.add(new Category(cat));
+                Boolean existing = false;
+                for (Category cat2 :categories){
+                    if (cat2.name.equals(cat)){
+                        existing = true;
+                    }
+                }
+                if (!existing){
+                    categories.add(new Category(cat));
+                }
             }
         }
     }

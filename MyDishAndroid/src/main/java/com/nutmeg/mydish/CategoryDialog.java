@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,20 +78,25 @@ public class CategoryDialog extends AlertDialog {
             @Override
             public void onClick(View view) {
                 String newCat = search.getText().toString();
-                Boolean exists = false;
-                for (Category cat: categories){
-                    if (cat.name.equals(newCat)){
-                        cat.check();
-                        exists = true;
-                        break;
+                if (newCat.length() < 1){
+                    Toast.makeText(context,"Give the category a name!",Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Boolean exists = false;
+                    for (Category cat: categories){
+                        if (cat.name.equals(newCat)){
+                            cat.check();
+                            exists = true;
+                            break;
+                        }
                     }
+                    if (!exists){
+                        Category addCat = new Category(newCat);
+                        addCat.check();
+                        categories.add(addCat);
+                    }
+                    updateAdapter();
                 }
-                if (!exists){
-                    Category addCat = new Category(newCat);
-                    addCat.check();
-                    categories.add(addCat);
-                }
-                updateAdapter();
             }
         });
     }

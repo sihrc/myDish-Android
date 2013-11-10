@@ -2,6 +2,7 @@ package com.nutmeg.mydish;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -44,7 +45,7 @@ public class EditEntry extends Activity {
     ArrayList<String> urls;
     String picturePath;
 
-    ArrayList<Category> categories;
+    ArrayList<Category> categories = new ArrayList<Category>();
     DBHandler db;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,13 +86,8 @@ public class EditEntry extends Activity {
         title = (EditText) findViewById(R.id.inputTitle);
         recipe = (EditText) findViewById(R.id.inputRecipe);
         notes = (EditText) findViewById(R.id.inputNotes);
-        String raw = curEntry.categories.replace("#",",");
-        if (raw.length() > 30)
-            inputCategories.setText(raw.substring(0,27) + "...");
-        else
-            inputCategories.setText(raw);
 
-
+        setUpInputCategory();
 
         title.setText(curEntry.title);
         recipe.setText(curEntry.recipe);
@@ -192,7 +188,6 @@ public class EditEntry extends Activity {
 
     //Categories Dialog with List of Categories
     protected void showCategoriesDialog(){
-        getCategories();
         catsDialog = new CategoryDialog(EditEntry.this, categories);
         Button saveCats = (Button) catsDialog.findViewById(R.id.saveCats);
         Button textSaveCats = (Button) catsDialog.findViewById(R.id.textSaveCats);
@@ -224,23 +219,41 @@ public class EditEntry extends Activity {
             }
         };
     }
+    protected void onChangeCategories() {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        for(Category cat : catsDialog.getSelected()){
+            if (cat.checked){
+                stringBuilder.append(Character.toUpperCase(cat.name.charAt(0)));
+                stringBuilder.append(cat.name.substring(1));
+                stringBuilder.append(", ");
+            }
+        }
+        if (stringBuilder.length() > 30)
+            inputCategories.setText(new String(stringBuilder).substring(0,27) + "...");
+        else{
+            String text = stringBuilder.toString();
+            inputCategories.setText(text.substring(0, text.length() - 2));}
+    }
     void getCategories(){
         String raw = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getString("categories", "");
-        ArrayList<String> existing = new ArrayList<String>(Arrays.asList(curEntry.categories.split("#")));
-        categories = new ArrayList<Category>();
         if (raw.equals("")){
             categories.add(new Category("Lunch"));
         }
         else{
             for (String cat: Arrays.asList(raw.split("#"))){
-                Category newCat = new Category(cat);
-                if (existing.contains(cat))
-                    newCat.check();
-                categories.add(newCat);
+                Boolean existing = false;
+                for (Category cat2 :categories){
+                    if (cat2.name.equals(cat)){
+                        existing = true;
+                    }
+                }
+                if (!existing){
+                    categories.add(new Category(cat));
+                }
             }
         }
     }
-
     void saveCategories(){
         StringBuilder sb = new StringBuilder();
         for (Category cat: categories){
@@ -248,18 +261,6 @@ public class EditEntry extends Activity {
             sb.append("#");
         }
         getSharedPreferences("PREFERENCE",MODE_PRIVATE).edit().putString("categories",sb.toString()).commit();
-    }
-    protected void onChangeCategories() {
-        StringBuilder stringBuilder = new StringBuilder();
-
-        for(Category cat : catsDialog.getSelected()){
-            stringBuilder.append(cat.name);
-            stringBuilder.append(", ");
-        }
-        if (stringBuilder.length() > 30)
-            inputCategories.setText(new String(stringBuilder).substring(0,27) + "...");
-        else
-            inputCategories.setText(stringBuilder.toString());
     }
 
     public static Drawable LoadImageFromWebOperations(String url) {
@@ -292,22 +293,37 @@ public class EditEntry extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.edit, menu);
-        MenuItem item = menu.findItem(R.id.action_share);
-        mShareActionProvider = (ShareActionProvider) item.getActionProvider();
         return true;
     }
 
     //Setup Options Menu
     public boolean onOptionsItemSelected(MenuItem item){
-        
+        switch (item.getItemId()) {
+            case R.id.action_share: //add Entry
+                showShareDialog();
+                return true;
+        }
         return true;
     }
 
-    public void showShareDialog(Intent shareIntent){
-        if (mShareActionProvider != null) {
-            mShareActionProvider.setShareIntent(shareIntent);
+    public void setUpInputCategory(){
+        String raw = curEntry.categories.replace("#",",");
+        if (raw.length() > 30)
+            inputCategories.setText(raw.substring(0,27) + "...");
+        else
+            inputCategories.setText(raw);
+        for (String cat: raw.split(",")){
+            categories.add(new Category(cat));
         }
 
+        if (raw.equals("")){
+            inputCategories.setText("Tap to add a category!");
+        }
+
+    }
+
+    public void showShareDialog(){
+        new ShareDialog(EditEntry.this).show();
     }
 }
 

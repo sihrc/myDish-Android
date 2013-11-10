@@ -3,4 +3,71 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/share_title"
+        android:text = "Share with?"
+        android:textSize = "20sp"
+        android:padding = "15dp"
+        android:layout_width = "match_parent"
+        android:layout_height = "wrap_content"
+        android:textColor = "@android:color/white"
+        android:background="@android:color/black"
+        />
+    <Button
+        android:id = "@+id/share_cancel"
+        android:text = "X"
+        android:textSize = "30sp"
+        android:layout_width = "wrap_content"
+        android:layout_height = "wrap_content"
+        android:layout_alignParentRight="true"
+        android:padding = "5dp"
+        android:textColor = "@android:color/white"
+        android:background = "@android:color/transparent"
+        />
+
+    <Button
+        android:id = "@+id/email"
+        android:layout_marginLeft="10dp"
+        android:layout_height = "70dp"
+        android:layout_width = "70dp"
+        android:padding = "10dp"
+        android:layout_below = "@id/share_title"
+        android:background = "@drawable/email"
+        />
+    <Button
+        android:id = "@+id/instagram"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_height = "65dp"
+        android:layout_width = "65dp"
+        android:padding = "10dp"
+        android:layout_toRightOf="@id/email"
+        android:layout_below = "@id/share_title"
+        android:background = "@drawable/instagram"
+        />
+    <Button
+        android:id = "@+id/facebook"
+        android:layout_height = "70dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_width = "70dp"
+        android:padding = "10dp"
+        android:layout_below = "@id/email"
+        android:background = "@drawable/facebook"
+        />
+
+    <Button
+        android:id = "@+id/twitter"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_height = "70dp"
+        android:layout_width = "70dp"
+        android:layout_marginTop="5dp"
+        android:padding = "10dp"
+        android:layout_toRightOf="@id/facebook"
+        android:layout_below = "@id/email"
+        android:background = "@drawable/twitter"
+        />
+
+
 </RelativeLayout>
