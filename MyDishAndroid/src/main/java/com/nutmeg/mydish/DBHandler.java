@@ -79,6 +79,11 @@ public class DBHandler {
         deleteEntryById(entry.id);
         addEntry(entry);
     }
+
+    public ArrayList<Entry> getEntriesByCat(String category){
+        return sweepCursor(database.query(DatabaseModel.TABLE_NAME, allColumns, DatabaseModel.ENTRY_CATEGORIES + " like '%" + category + "%'", null, null, null, DatabaseModel.ENTRY_DATE  + " DESC"));
+    }
+
     //Get Posts from Cursor
     public ArrayList<Entry> sweepCursor (Cursor cursor) {
         ArrayList<Entry> entries = new ArrayList<Entry>();

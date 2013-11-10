@@ -16,9 +16,11 @@ import android.widget.Toast;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
@@ -88,8 +90,17 @@ public class AddEntry extends Activity {
         inputPicture.setOnClickListener(takePicture());
         inputTakePicture.setOnClickListener(takePicture());
         inputCategories.setOnClickListener(selectCategories());
+        recipe.setOnClickListener(insertRecipe());
     }
 
+    public View.OnClickListener insertRecipe(){
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(AddEntry.this,"Recipe Options Coming Soon!",Toast.LENGTH_SHORT).show();
+            }
+        };
+    }
     //Camera Activity
     private View.OnClickListener takePicture(){
         return new View.OnClickListener() {
@@ -97,7 +108,7 @@ public class AddEntry extends Activity {
             public void onClick(View view) {
                 new AlertDialog.Builder(view.getContext())
                         .setTitle("Are you sure?")
-                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        .setPositiveButton("Yes!", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 /*ContentValues values = new ContentValues();
                                 String filename = String.valueOf(System.currentTimeMillis()/1000L);
@@ -113,7 +124,7 @@ public class AddEntry extends Activity {
                                 inputTakePicture.setText("Tap to retake picture!");
                                 grabPicture();
                             }
-                        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         // Do nothing.
                     }
@@ -128,19 +139,19 @@ public class AddEntry extends Activity {
 
     //Save
     private View.OnClickListener save(){
+        final Long curTime = System.currentTimeMillis();
+        SimpleDateFormat sdf = new SimpleDateFormat("M/d/yyyy");
+        final String curDate = sdf.format(new Date(curTime));
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Entry newEntry = new Entry(
                                     title.getText().toString(),
-                                    notes.getText().toString(),
+                                    notes.getText().toString() + "   --" + curDate,
                                     recipe.getText().toString(),
-                                    String.valueOf(Calendar.getInstance().get(Calendar.MONTH)) +
-                                    "/" + String.valueOf(Calendar.getInstance().get(Calendar.DATE)) + "/" +
-                                    String.valueOf(Calendar.getInstance().get(Calendar.YEAR)),
+                                    String.valueOf(curTime),
                                     "",
                                     "");
-
                 newEntry.setPicture(AddEntry.this.picturePath);
                 List<CharSequence> selected = new ArrayList<CharSequence>();
                 for (Category cat: categories){
@@ -201,25 +212,28 @@ public class AddEntry extends Activity {
     }
 
     protected void onChangeCategories() {
-        StringBuilder stringBuilder = new StringBuilder();
+            StringBuilder stringBuilder = new StringBuilder();
 
-        for(Category cat : catsDialog.getSelected()){
-            if (cat.checked){
-                stringBuilder.append(Character.toUpperCase(cat.name.charAt(0)));
-                stringBuilder.append(cat.name.substring(1));
-                stringBuilder.append(", ");
+            for(Category cat : catsDialog.getSelected()){
+                if (cat.checked){
+                    stringBuilder.append(Character.toUpperCase(cat.name.charAt(0)));
+                    stringBuilder.append(cat.name.substring(1));
+                    stringBuilder.append(", ");
+                }
             }
-        }
-        if (stringBuilder.length() > 30)
-            inputCategories.setText(new String(stringBuilder).substring(0,27) + "...");
-        else{
-            String text = stringBuilder.toString();
-            inputCategories.setText(text.substring(0, text.length() - 2));}
+            if (stringBuilder.length() > 30)
+                inputCategories.setText(new String(stringBuilder).substring(0,27) + "...");
+            else if (stringBuilder.length() > 1){
+                String text = stringBuilder.toString();
+                inputCategories.setText(text.substring(0, text.length() - 2));}
+            else {
+                inputCategories.setText("Tap to select categories!");
+            }
     }
     void getCategories(){
         String raw = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getString("categories", "");
         if (raw.equals("")){
-            categories.add(new Category("Lunch"));
+            categories.add(new Category("Entree"));
         }
         else{
             for (String cat: Arrays.asList(raw.split("#"))){
@@ -258,9 +272,6 @@ public class AddEntry extends Activity {
     public void grabPicture(){
         AddEntry.this.picturePath = urls.get(new Random().nextInt(urls.size()));
         new AsyncTask<Void, Void, Drawable>(){
-            protected void onPreExecute(){
-                Toast.makeText(AddEntry.this,"Loading image ... ", Toast.LENGTH_SHORT).show();
-            }
             protected Drawable doInBackground(Void... voids){
                 return LoadImageFromWebOperations(AddEntry.this.picturePath);}
             protected void onPostExecute(Drawable draw){

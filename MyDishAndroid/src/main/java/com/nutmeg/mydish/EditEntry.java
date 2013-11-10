@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Editable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,9 +21,11 @@ import android.widget.Toast;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
@@ -32,8 +35,6 @@ import java.util.Random;
  */
 
 public class EditEntry extends Activity {
-    private ShareActionProvider mShareActionProvider;
-
     Button save, textSave, cancel, inputCategories, inputTakePicture;
     ImageView inputPicture;
     EditText title, recipe, notes;
@@ -77,7 +78,7 @@ public class EditEntry extends Activity {
                 protected Drawable doInBackground(Void... voids){
                     return LoadImageFromWebOperations(curEntry.picture);}
                 protected void onPostExecute(Drawable draw){
-                    Toast.makeText(EditEntry.this,"Hooray! You got a kitty!",Toast.LENGTH_LONG).show();
+                    Toast.makeText(EditEntry.this,"Just a sec! Kitty loading...",Toast.LENGTH_SHORT).show();
                     inputPicture.setImageDrawable(draw);
                     inputPicture.invalidate();
                 }
@@ -95,7 +96,6 @@ public class EditEntry extends Activity {
 
         setupButtons();
     }
-
     private void setupButtons(){
         save.setOnClickListener(save());
         textSave.setOnClickListener(save());
@@ -108,8 +108,16 @@ public class EditEntry extends Activity {
         inputPicture.setOnClickListener(takePicture());
         inputTakePicture.setOnClickListener(takePicture());
         inputCategories.setOnClickListener(selectCategories());
+        recipe.setOnClickListener(insertRecipe());
     }
-
+    public View.OnClickListener insertRecipe(){
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(EditEntry.this,"Recipe Options Coming Soon!",Toast.LENGTH_SHORT).show();
+            }
+        };
+    }
     //Camera Activity
     private View.OnClickListener takePicture(){
         return new View.OnClickListener() {
@@ -117,7 +125,7 @@ public class EditEntry extends Activity {
             public void onClick(View view) {
                 new AlertDialog.Builder(view.getContext())
                         .setTitle("Are you sure?")
-                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        .setPositiveButton("Yes!", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 /*ContentValues values = new ContentValues();
                                 String filename = String.valueOf(System.currentTimeMillis()/1000L);
@@ -132,14 +140,16 @@ public class EditEntry extends Activity {
                                 startActivity(intent);*/
 
                                 grabPicture();
+                                Toast.makeText(EditEntry.this,"Hooray! You're getting a kitty!",Toast.LENGTH_SHORT).show();
                             }
-                        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         // Do nothing.
                     }
                 }).show();
             }
         };
+
     }
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         if (requestCode == 1){
@@ -148,32 +158,21 @@ public class EditEntry extends Activity {
 
     //Save
     private View.OnClickListener save(){
+        final Long curTime = System.currentTimeMillis();
+        SimpleDateFormat sdf = new SimpleDateFormat("M/d/yyyy");
+        final String curDate = sdf.format(new Date(curTime));
         return new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Entry newEntry = new Entry(
-                        title.getText().toString(),
-                        notes.getText().toString(),
-                        recipe.getText().toString(),
-                        String.valueOf(Calendar.getInstance().get(Calendar.MONTH)) +
-                                "/" + String.valueOf(Calendar.getInstance().get(Calendar.DATE)) + "/" +
-                                String.valueOf(Calendar.getInstance().get(Calendar.YEAR)),
-                        "",
-                        "");
+                @Override
+                public void onClick(View view) {
+                    curEntry.title = title.getText().toString();
+                    curEntry.notes = notes.getText().toString();
+                    curEntry.notes = notes.getText().toString() + "   --" + curDate;
+                    curEntry.recipe = recipe.getText().toString();
 
-                newEntry.setPicture(EditEntry.this.picturePath);
-                List<CharSequence> selected = new ArrayList<CharSequence>();
-                for (Category cat: categories){
-                    if (cat.checked){
-                        selected.add(cat.name);
-                    }
+                    db.updateEntry(curEntry);
+                    finish();
                 }
-                newEntry.setCategories(selected);
-                saveCategories();
-                db.updateEntry(newEntry);
-                finish();
-            }
-        };
+            };
     }
 
     //Select Categories
@@ -231,9 +230,12 @@ public class EditEntry extends Activity {
         }
         if (stringBuilder.length() > 30)
             inputCategories.setText(new String(stringBuilder).substring(0,27) + "...");
-        else{
+        else if (stringBuilder.length() > 1){
             String text = stringBuilder.toString();
             inputCategories.setText(text.substring(0, text.length() - 2));}
+        else {
+            inputCategories.setText("Tap to select categories!");
+        }
     }
     void getCategories(){
         String raw = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getString("categories", "");
@@ -276,12 +278,9 @@ public class EditEntry extends Activity {
     public void grabPicture(){
         EditEntry.this.picturePath = urls.get(new Random().nextInt(urls.size()));
         new AsyncTask<Void, Void, Drawable>(){
-            protected void onPreExecute(){
-                Toast.makeText(EditEntry.this,"Loading image ... ", Toast.LENGTH_SHORT).show();
-            }            protected Drawable doInBackground(Void... voids){
+            protected Drawable doInBackground(Void... voids){
                 return LoadImageFromWebOperations(EditEntry.this.picturePath);}
             protected void onPostExecute(Drawable draw){
-                Toast.makeText(EditEntry.this,"Hooray! You got a kitty!",Toast.LENGTH_LONG).show();
                 inputPicture.setImageDrawable(draw);
                 inputPicture.invalidate();
             }
@@ -308,20 +307,21 @@ public class EditEntry extends Activity {
 
     public void setUpInputCategory(){
         String raw = curEntry.categories.replace("#",",");
+        Log.i("RawString",raw);
         if (raw.length() > 30)
             inputCategories.setText(raw.substring(0,27) + "...");
+        else if (raw.length() > 1)
+            inputCategories.setText(raw.substring(0,raw.length() - 1));
         else
-            inputCategories.setText(raw);
+            inputCategories.setText("Tap to add categories!");
         for (String cat: raw.split(",")){
-            categories.add(new Category(cat));
+            for (Category cat2: categories){
+                if (cat2.name.equals(cat)){
+                    cat2.check();
+                }
+            }
         }
-
-        if (raw.equals("")){
-            inputCategories.setText("Tap to add a category!");
-        }
-
     }
-
     public void showShareDialog(){
         new ShareDialog(EditEntry.this).show();
     }

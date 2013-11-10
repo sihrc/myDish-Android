@@ -1,9 +1,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/action_settings"
-        android:title="@string/action_settings"
-        android:orderInCategory="100"
-        android:showAsAction="never" />
     <item android:id="@+id/action_addEntry"
-        android:icon="@drawable/plus"
+        android:orderInCategory="100"
+        android:title="Add"
+        android:text="Add"
         android:showAsAction="always" />
+    <item android:id="@+id/action_search"
+        android:orderInCategory="100"
+        android:text="Search"
+        android:textSize="20sp"
+        android:title="Search"
+        android:showAsAction="always" />
+
 </menu>

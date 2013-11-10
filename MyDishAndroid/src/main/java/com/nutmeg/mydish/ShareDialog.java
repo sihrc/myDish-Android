@@ -30,11 +30,13 @@ public class ShareDialog extends AlertDialog {
     }
 
     public void onCreate(Bundle savedInstanceState){
+        Button cancel = (Button) findViewById(R.id.share_cancel);
         Button email = (Button) findViewById(R.id.email);
         Button facebook = (Button) findViewById(R.id.facebook);
         Button twitter = (Button) findViewById(R.id.twitter);
         Button instagram = (Button) findViewById(R.id.instagram);
 
+        cancel.setOnClickListener(click("not to share!"));
         email.setOnClickListener(click("Email"));
         facebook.setOnClickListener(click("Facebook"));
         twitter.setOnClickListener(click("Twitter"));
@@ -45,7 +47,7 @@ public class ShareDialog extends AlertDialog {
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getOwnerActivity(),"You've chosen " + choice + "! Nice choice.",Toast.LENGTH_SHORT).show();
+                Toast.makeText(context,"You've chosen " + choice + "! Nice choice.",Toast.LENGTH_SHORT).show();
                 dismiss();
             }
         };

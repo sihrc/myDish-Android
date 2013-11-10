@@ -1,6 +1,7 @@
 package com.nutmeg.mydish;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.view.LayoutInflater;
@@ -13,8 +14,11 @@ import android.widget.Toast;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -52,15 +56,18 @@ public class EntryAdapter extends ArrayAdapter {
 
         final Entry entry = this.entries.get(position);
 
-        holder.title.setText(entry.title);
-        holder.notes.setText(entry.notes);
-        holder.date.setText(entry.date);
 
+        if (entry.title.equals("")){
+            holder.title.setText("[Tap to add a title]");
+            holder.title.setTextColor(Color.LTGRAY);
+        } else{holder.title.setText(entry.title);}
+        if (entry.notes.equals("")){
+            holder.notes.setText("Tap the image to add notes!");
+        } else{holder.notes.setText(entry.notes);}
+        SimpleDateFormat sdf = new SimpleDateFormat("M/d/yyyy");
+        holder.date.setText("Created on: " + sdf.format(new Date(Long.parseLong(entry.date))));
 
         new AsyncTask<Void, Void, Drawable>(){
-            protected void onPreExecute(){
-                Toast.makeText(getContext(), "Loading image ... ", Toast.LENGTH_SHORT).show();
-            }
             protected Drawable doInBackground(Void... voids){
                 return LoadImageFromWebOperations(entry.picture);}
             protected void onPostExecute(Drawable draw){

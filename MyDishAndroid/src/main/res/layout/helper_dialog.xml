@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background = "#ffffff">
+
+    <RelativeLayout
+        android:id = "@+id/title_block"
+        android:layout_width = "match_parent"
+        android:layout_height = "wrap_content"
+        android:background = "@android:color/black"
+        android:padding = "5dp">
+        <ImageView
+            android:id = "@+id/MyDish"
+            android:layout_height = "50dp"
+            android:layout_width = "50dp"
+            android:background = "@drawable/ic_launcher"
+            />
+        <TextView
+            android:id = "@+id/helper_title"
+            android:layout_toRightOf = "@id/MyDish"
+            android:layout_height = "wrap_content"
+            android:layout_width = "match_parent"
+            android:layout_marginLeft = "10dp"
+            android:layout_marginTop = "15dp"
+            android:text = "How May I Help You?"
+            android:textSize = "26sp"
+            android:textColor = "@android:color/white"
+            />
+    </RelativeLayout>
+
+    <TextView
+        android:id = "@+id/helper_question"
+        android:layout_width = "match_parent"
+        android:layout_height = "wrap_content"
+        android:textSize = "20sp"
+        android:layout_marginTop = "10dp"
+        android:layout_marginLeft = "10dp"
+        android:layout_below="@id/title_block"
+        android:text = "Would you like to ..."
+    />
+    <View
+        android:id = "@+id/divider"
+        android:layout_below = "@id/helper_question"
+        android:layout_marginTop = "10dp"
+        android:layout_height = "1dp"
+        android:layout_width = "match_parent"
+        android:background = "#a9a9a9"
+        />
+    <TextView
+        android:id = "@+id/helper_add"
+        android:layout_below="@id/divider"
+        android:layout_width = "match_parent"
+        android:layout_height = "60dp"
+        android:textSize = "24sp"
+        android:gravity = "center"
+        android:layout_marginLeft = "10dp"
+        android:textStyle="bold"
+        android:text = "Add an entry"
+        />
+    <View
+        android:id = "@+id/divider2"
+        android:layout_below = "@id/helper_add"
+        android:layout_height = "1dp"
+        android:layout_width = "match_parent"
+        android:background = "#a9a9a9"
+        />
+    <TextView
+        android:id = "@+id/helper_edit"
+        android:layout_below="@id/divider2"
+        android:layout_width = "match_parent"
+        android:layout_height = "60dp"
+        android:textSize = "24sp"
+        android:gravity = "center"
+        android:layout_marginLeft = "10dp"
+        android:textStyle="bold"
+        android:text = "Edit an entry"
+        />
+    <View
+        android:id = "@+id/divider3"
+        android:layout_below = "@id/helper_edit"
+        android:layout_height = "1dp"
+        android:layout_width = "match_parent"
+        android:background = "#a9a9a9"
+        />
+    <TextView
+        android:id = "@+id/helper_share"
+        android:layout_below="@id/divider3"
+        android:layout_width = "match_parent"
+        android:layout_height = "60dp"
+        android:textSize = "24sp"
+        android:gravity = "center"
+        android:layout_marginLeft = "10dp"
+        android:textStyle="bold"
+        android:text = "Share an entry"
+        />
+    <View
+        android:id = "@+id/divider4"
+        android:layout_below = "@id/helper_share"
+        android:layout_height = "1dp"
+        android:layout_width = "match_parent"
+        android:background = "#a9a9a9"
+        />
+    <TextView
+        android:id = "@+id/helper_search"
+        android:layout_below="@id/divider4"
+        android:layout_width = "match_parent"
+        android:layout_height = "60dp"
+        android:textSize = "24sp"
+        android:gravity = "center"
+        android:layout_marginLeft = "10dp"
+        android:textStyle="bold"
+        android:text = "Search for entries"
+        />
+    <View
+        android:id = "@+id/divider5"
+        android:layout_below = "@id/helper_search"
+        android:layout_height = "1dp"
+        android:layout_width = "match_parent"
+        android:background = "#a9a9a9"
+        />
+
+    <TextView
+        android:id = "@+id/helper_return"
+        android:layout_below="@id/divider5"
+        android:layout_width = "match_parent"
+        android:layout_height = "60dp"
+        android:textSize = "24sp"
+        android:gravity = "center"
+        android:layout_marginLeft = "10dp"
+        android:textStyle="bold"
+        android:text = "I'm good, thanks!"
+        />
+    <View
+        android:id = "@+id/divider6"
+        android:layout_below = "@id/helper_edit"
+        android:layout_height = "1dp"
+        android:layout_width = "match_parent"
+        android:background = "#a9a9a9"
+        />
+</RelativeLayout>
