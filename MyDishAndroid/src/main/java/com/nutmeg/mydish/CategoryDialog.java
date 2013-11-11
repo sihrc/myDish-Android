@@ -91,6 +91,7 @@ public class CategoryDialog extends AlertDialog {
                         }
                     }
                     if (!exists){
+                        newCat = Character.toUpperCase(newCat.charAt(0)) + newCat.substring(1);
                         Category addCat = new Category(newCat);
                         addCat.check();
                         categories.add(addCat);

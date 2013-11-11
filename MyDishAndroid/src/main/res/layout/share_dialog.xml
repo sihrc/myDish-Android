@@ -30,7 +30,7 @@
 
     <Button
         android:id = "@+id/email"
-        android:layout_marginLeft="15dp"
+        android:layout_marginLeft="10dp"
         android:layout_height = "70dp"
         android:layout_width = "70dp"
         android:padding = "10dp"
@@ -39,7 +39,7 @@
         />
     <Button
         android:id = "@+id/instagram"
-        android:layout_marginLeft="15dp"
+        android:layout_marginLeft="10dp"
         android:layout_marginTop="5dp"
         android:layout_height = "65dp"
         android:layout_width = "65dp"
@@ -51,7 +51,7 @@
     <Button
         android:id = "@+id/facebook"
         android:layout_height = "80dp"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="5dp"
         android:layout_width = "80dp"
         android:layout_toRightOf = "@id/instagram"
         android:layout_marginTop = "52dp"
@@ -60,12 +60,12 @@
 
     <Button
         android:id = "@+id/twitter"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="5dp"
         android:layout_marginRight="10dp"
         android:layout_height = "70dp"
         android:layout_width = "70dp"
         android:padding = "10dp"
-        android:layout_toRightOf="@id/facebook"
+        android:layout_alignParentRight="true"
         android:layout_marginTop = "57dp"
         android:background = "@drawable/twitter"
         />

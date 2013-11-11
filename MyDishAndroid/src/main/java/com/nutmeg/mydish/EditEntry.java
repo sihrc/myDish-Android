@@ -2,21 +2,22 @@ package com.nutmeg.mydish;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.Editable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ShareActionProvider;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import java.io.InputStream;
@@ -24,10 +25,7 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Random;
 
 /**
@@ -40,7 +38,6 @@ public class EditEntry extends Activity {
     EditText title, recipe, notes;
 
     CategoryDialog catsDialog;
-
     Entry curEntry;
 
     ArrayList<String> urls;
@@ -52,10 +49,8 @@ public class EditEntry extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addentry);
-
         Intent in = getIntent();
         String id = in.getStringExtra("id");
-
 
         urls =  new ArrayList<String>(Arrays.asList(getString(R.string.cuteAnimals).split(",")));
         //Initializing the DBHandler
@@ -118,6 +113,7 @@ public class EditEntry extends Activity {
             }
         };
     }
+
     //Camera Activity
     private View.OnClickListener takePicture(){
         return new View.OnClickListener() {
@@ -158,17 +154,19 @@ public class EditEntry extends Activity {
 
     //Save
     private View.OnClickListener save(){
-        final Long curTime = System.currentTimeMillis();
-        SimpleDateFormat sdf = new SimpleDateFormat("M/d/yyyy");
-        final String curDate = sdf.format(new Date(curTime));
         return new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    Long curTime = System.currentTimeMillis();
+                    SimpleDateFormat sdf = new SimpleDateFormat("M/d/yyyy");
+                    String curDate = sdf.format(new Date(curTime));
                     curEntry.title = title.getText().toString();
-                    curEntry.notes = notes.getText().toString();
                     if (!curEntry.notes.equals(notes.getText().toString())){
                         curEntry.notes = notes.getText().toString() + "   --" + curDate;
+                    } else {
+                        curEntry.notes = notes.getText().toString();
                     }
+                    Log.i("Date",curDate);
                     curEntry.recipe = recipe.getText().toString();
 
                     db.updateEntry(curEntry);
@@ -326,6 +324,33 @@ public class EditEntry extends Activity {
     }
     public void showShareDialog(){
         new ShareDialog(EditEntry.this).show();
+    }
+
+    public void setupUI(View view) {
+        //Set up touch listener for non-text box views to hide keyboard.
+        if(!(view instanceof EditText)) {
+            Log.i("HI I'M VIEW", view.toString());
+            view.setOnTouchListener(new View.OnTouchListener() {
+                public boolean onTouch(View v, MotionEvent event) {
+                    hideKeyboard(EditEntry.this);
+                    return false;
+                }
+            });
+        }
+
+        //If a layout container, iterate over children and seed recursion.
+        if (view instanceof ViewGroup) {
+            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+                View innerView = ((ViewGroup) view).getChildAt(i);
+                setupUI(innerView);
+                Log.i("I DID THIS ONCE", "I DID THIS ONCE");
+            }
+        }
+    }
+
+    public static void hideKeyboard(Activity activity) {
+        InputMethodManager inputMethodManager = (InputMethodManager)  activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
     }
 }
 

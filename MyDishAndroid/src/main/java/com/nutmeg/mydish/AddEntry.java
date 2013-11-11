@@ -8,7 +8,11 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.UserDictionary;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -139,17 +143,22 @@ public class AddEntry extends Activity {
 
     //Save
     private View.OnClickListener save(){
-        final Long curTime = System.currentTimeMillis();
-        SimpleDateFormat sdf = new SimpleDateFormat("M/d/yyyy");
-        final String curDate = sdf.format(new Date(curTime));
+
+
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                SimpleDateFormat sdf = new SimpleDateFormat("M/d/yyyy");
+                final String curDate = sdf.format(new Date(System.currentTimeMillis()));
+                String input = notes.getText().toString();
+                if (!input.equals("")){
+                    input = input  + "   --" + curDate;
+                }
                 Entry newEntry = new Entry(
                                     title.getText().toString(),
-                                    notes.getText().toString() + "   --" + curDate,
+                                    input,
                                     recipe.getText().toString(),
-                                    String.valueOf(curTime),
+                                    String.valueOf(System.currentTimeMillis()),
                                     "",
                                     "");
                 newEntry.setPicture(AddEntry.this.picturePath);
@@ -282,6 +291,30 @@ public class AddEntry extends Activity {
         }.execute();
     }
 
+    public void setupUI(View view) {
+        //Set up touch listener for non-text box views to hide keyboard.
+        if(!(view instanceof EditText)) {
+            view.setOnTouchListener(new View.OnTouchListener() {
+                public boolean onTouch(View v, MotionEvent event) {
+                    hideKeyboard(AddEntry.this);
+                    return false;
+                }
+            });
+        }
+
+        //If a layout container, iterate over children and seed recursion.
+        if (view instanceof ViewGroup) {
+            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+                View innerView = ((ViewGroup) view).getChildAt(i);
+                setupUI(innerView);
+            }
+        }
+    }
+
+    public static void hideKeyboard(Activity activity) {
+        InputMethodManager inputMethodManager = (InputMethodManager)  activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+    }
 
 }
 

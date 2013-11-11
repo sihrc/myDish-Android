@@ -65,6 +65,7 @@
         android:layout_height = "40dp"
         android:layout_below = "@id/category_list"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom = "true"
         android:background = "@drawable/cancel"/>
 
     <Button
